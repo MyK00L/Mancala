@@ -81,10 +81,18 @@ void cycle(){
 	}
 }
 
+const int MGENS = 1024;
+
 int main(){
-	for(int i=0; i<2; ++i){
+	for(int i=0; i<MGENS; ++i){
 		cout<<"generation #"<<i<<": ";
 		cycle();
+		if((i%12)==0){
+			if(!matchvsmm(0)){
+				cerr<<"WTF FOR REAL?"<<endl;
+				break;
+			}
+		}
 	}
 	Game game;
 	vector<double> est;
