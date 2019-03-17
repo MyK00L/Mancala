@@ -2,9 +2,7 @@
 #include <cinttypes>
 #include <string.h> //for memcpy
 
-#pragma GCC optimize("Ofast")
-
-const int MAXD = 11; //Maximum Depth
+const int MAXD = 12; //Maximum Depth
 const int INF  = 32768; //Infinity
 
 using namespace std;
@@ -97,27 +95,8 @@ bool doMove(byte index){//Plays a given move(don't give it an invalid index)(ret
 }
 
 int heuristic(){//Calculates an heuristic value of the board(negative if human player is winning)
-    /*
-    float res=0;
-    res+=4*board[13];
-    res-=4*board[6];
-    res-=3.5*board[0];
-    res-=3*board[1];
-    res-=2.5*board[2];
-    res-=2*board[3];
-    res-=1.5*board[4];
-    res-=1*board[5];
-    res+=3.5*board[7];
-    res+=3*board[8];
-    res+=2.5*board[9];
-    res+=2*board[10];
-    res+=1.5*board[11];
-    res+=1*board[12];
-    */
-    //same thing
     return (int)((4*board[13]+3.5*board[7]+3*board[8]+2.5*board[9]+2*board[10]+1.5*board[11]+1*board[12])-(4*board[6]+3.5*board[5]+3*board[4]+2.5*board[3]+2*board[2]+1.5*board[1]+1*board[0]));
 }
-
 
 //--MiniMax--
 int maxi(int alpha, int beta, int depth);//gotta declare it here so that mini can call it
@@ -189,7 +168,7 @@ int maxi(int alpha, int beta, int depth){//maximizing player(returns the highest
     }
     return best;
 }
-//highest value = most advantageous move for the machine
+// highest value = most advantageous move for the machine
 // lowest value = most advantageous move for the human player
 
 int getAiMove(){//returns the index of the best move for the machine
@@ -211,9 +190,9 @@ int getAiMove(){//returns the index of the best move for the machine
                 bestMove=i;
             }
             memcpy(board,boardTemp,14);
-            //cout << endl << i-6 << ": " << val << endl;
         }
     }
+    cerr<<"MM's conf: "<<bestVal<<endl;
     if(bestMove==-1){ //If there's no decent move choose the first possible one
         for(byte i=7; i<13; i++){
             if(board[i]){
@@ -230,39 +209,6 @@ int getAiMove(){//returns the index of the best move for the machine
 //int main()
 int mmf(vector<int> T)
 {
-    /*ios_base::sync_with_stdio(0);
-    cin.tie(0);
-    int t;
-    int player;
-    cin >> player;
-    if(player==1){
-        cin >> t;
-        board[13]=t;
-        for(int i=0; i<6; i++){
-            cin >> t;
-            board[i+7]=t;
-        }
-        cin >> t;
-        board[6]=t;
-        for(int i=0; i<6; i++){
-            cin >> t;
-            board[i]=t;
-        }
-    } else {
-        cin >> t;
-        board[6]=t;
-        for(int i=0; i<6; i++){
-            cin >> t;
-            board[i]=t;
-        }
-        cin >> t;
-        board[13]=t;
-        for(int i=0; i<6; i++){
-            cin >> t;
-            board[i+7]=t;
-        }
-    }*/
-    int player = 1;
     for(int i=0; i<7; ++i)board[i+7]=T[i];
 	for(int i=7; i<14; ++i)board[i-7]=T[i];
     /*if(board[0]==4&&board[1]==4&&board[2]==4&&board[3]==4&&board[4]==4&&board[5]==4&&board[6]==0&&board[7]==4&&board[8]==4&&board[9]==4&&board[10]==4&&board[11]==4&&board[12]==4&&board[13]==0){

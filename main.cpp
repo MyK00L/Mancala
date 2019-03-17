@@ -9,6 +9,28 @@ const int POPSIZE = 42;
 
 AI ais[POPSIZE];
 
+bool matchvsmm(int i){
+	Game game;
+	vector<double> est;
+	while(!game.isOver()){
+		double ma=-2e9;
+		int move=-1;
+		if(game.getTurn()){
+			move=mmf(game.getTurnedBoard())+7;
+		} else {
+			est=ais[i].getMoves(game.getTurnedBoard());
+			for(int i=0; i<(int)est.size(); ++i){
+				if(game.validMove(i)&&est[i]>ma){
+					ma=est[i];
+					move=i;
+				}
+			}
+		}
+		game.move(move);
+	}
+	return game.getWinner();
+}
+
 bool match(int i, int j){
 	Game game;
 	vector<double> est;
@@ -60,7 +82,7 @@ void cycle(){
 }
 
 int main(){
-	for(int i=0; i<222; ++i){
+	for(int i=0; i<2; ++i){
 		cout<<"generation #"<<i<<": ";
 		cycle();
 	}
@@ -70,6 +92,9 @@ int main(){
 	while(!game.isOver()){
 		double ma=-2e9;
 		int move=-1;
+
+		if(game.getTurn()==0)cout<<endl<<endl<<"AI's turn"<<endl;
+		else cout<<endl<<endl<<"MM's turn"<<endl;
 		tmp=game.getTurnedBoard();
 		cout<<"\n\t";
 		for(int i=12;i>=7;--i)cout<<tmp[i]<<'\t';
@@ -78,7 +103,6 @@ int main(){
 		for(int i=0; i<6; ++i)cout<<tmp[i]<<'\t';
 		cout<<endl;
 		if(game.getTurn()==0){
-			cout<<"AI's turn"<<endl;
 			est=ais[0].getMoves(tmp);
 			for(int i=0; i<(int)est.size(); ++i){
 				cout<<est[i]<<' ';
@@ -88,22 +112,19 @@ int main(){
 				}
 			}
 			cout<<endl;
-			cout<<"AI moves "<<move<<endl;
+			cout<<"AI's move: "<<move<<endl;
 		} else {
-			cout<<"Your turn "<<endl;
-			/*do{
-				cin>>move;
-			} while(!game.validMove(move));*/
-			move=mmf(tmp);
-			cout<<"You move "<<move<<endl;
+			move=mmf(tmp)+7;
+			cout<<"MM's move: "<<move<<endl;
 		}
 		game.move(move);
 	}
+	cout<<endl<<endl;
 	ais[0].printToFile("bestAi.txt");
 	if(game.getWinner()){
-		cout<<"You lost lol"<<endl;
+		cout<<"AI lost to MM"<<endl;
 	} else {
-		cout<<"This thing sucks lol"<<endl;
+		cout<<"MM lost to AI!??"<<endl;
 	}
 	return 0;
 }

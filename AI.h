@@ -88,9 +88,7 @@ public:
 			}
 		}
 		out<<endl;
-		cerr<<NL<<endl;
 		for(int i=0; i<NL; ++i){
-			cerr<<NN[i]<<' ';
 			for(int j=0; j<NN[i]; ++j){
 				out<<bias[i][j]<<' ';
 			}
